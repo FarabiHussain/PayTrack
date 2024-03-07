@@ -1,111 +1,80 @@
-import docx, os, datetime
+import docx, os, win32print
+import variables as vars
+import customtkinter as ctk
+from CTkXYFrame import *
+from invoice import *
 from doc_utils import *
 from data_utils import *
-from docx.shared import Cm as CM
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
-from docx.text.paragraph import Paragraph
+from records import *
+from PIL import Image
+from path_manager import resource_path
 
 os.system("cls")
-timestamp = str(datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%I"))
-client = 'Awais Saleem'
+cwd = os.getcwd()
 
-# Create an instance of a word document
-doc = docx.Document("invoice.docx")
+invoice_id = "{:010}".format((read_from_record(cwd) + 1))
 
-insert_paragraph_after(
-    doc.add_paragraph(), 
-    (
-        "Invoice#:\t [invoice id]"
-        + "\nDate:\t\t " + timestamp
-        + "\nInvoiced to:\t " + client
-        + "\n"
-    )
-)
+# instance of a word document using the template
+document = docx.Document(resource_path(cwd + "\\assets\\templates\\invoice.docx"))
 
-# Table data in a form of list
-columns = [
-    {'heading': 'SL.', 'width': 1.0},
-    {'heading': 'DESCRIPTION', 'width': 20.0},
-    {'heading': 'QTY', 'width': 1.0},
-    {'heading': 'RATE', 'width': 1.0},
-    {'heading': 'AMOUNT', 'width': 1.0},
-]
+write_to_record(cwd, invoice_id)
 
 # Table data in a form of list
 data = [
-    {"desc": "Notary", "qty": 2, "rate": 30, "gst": 0.05, 'pst': 0.07},
-    {"desc": "Immigration Services", "qty": 1, "rate": 500, "gst": 0.05, 'pst': 0.07},
-    {"desc": "Government Fees", "qty": 1, "rate": 50, "gst": 0.0, 'pst': 0.0},
+    {"desc": "Affidavit", "qty": 1, "rate": 100, "gst": 0.05, "pst": 0.07},
 ]
 
-####################################################################################
+def generate_invoice():
+    generate_invoice_info(document, invoice_id)
+    generate_items_table(document, data)
+    generate_totals_table(document, calculate_totals(data))
 
-# Creating a table object
-items_table = doc.add_table(rows=1, cols=5)
-
-# Adding heading in the 1st row of the table
-row = items_table.rows[0].cells
-for idx, col in enumerate(columns):
-    row[idx].text = col['heading']
-
-# Adding data from the list to the table
-for index, entry in enumerate(data):
-
-    # Adding a row and then adding data in it.
-    row = items_table.add_row().cells
-
-    row[0].text = str(index)
-    row[1].text = str(entry["desc"])
-    row[2].text = str(entry["qty"])
-    row[3].text = str(entry["rate"])
-    row[4].text = str(entry["qty"] * entry["rate"])
-
-for cell in items_table.rows[0].cells:
-    set_cell_border(cell, bottom={"sz": 6, "color": "#AAAAAA", "val": "single", "space": "10"})
-    set_cell_border(cell, top={"sz": 6, "color": "#AAAAAA", "val": "single", "space": "15"})
+    # save the document with the current invoice ID
+    document.save(cwd + "\\output\\invoice_" + invoice_id + ".docx")
+    os.startfile(cwd + "\\output\\invoice_" + invoice_id + ".docx")
 
 
-# set column widths
-for idx, col in enumerate(columns):
-    for index, cell in enumerate(items_table.columns[idx].cells):
-        cell.width = CM(col['width'])
+vars.init()
 
-        if (index > 0):
-            set_cell_border(cell, bottom={"sz": 6, "color": "#EEEEEE", "val": "single", "space": "8"})
+# calculate x and y coordinates for the Tk root window
+h = 600
+w = 400
+x = (vars.screen_sizes['ws']/2) - (w/2)
+y = (vars.screen_sizes['hs']/2) - (h/2)
 
-    set_cell_border(cell, bottom={"sz": 6, "color": "#AAAAAA", "val": "single", "space": "0"})
+vars.root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
+vars.root.title("AMCAIM InGen")
+
+gui_font = ctk.CTkFont(family="Roboto Bold")
+
+vars.form['docx_btn'] = ctk.CTkButton(vars.root, text="", image=vars.icons['docx'], border_width=0, corner_radius=4, fg_color="#383FBC", command=lambda:generate_invoice(), width=36, height=36)
+vars.form['docx_btn'].place(x=20, y=540)
+
+vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=4, border_width=0, width=340, height=250)
+vars.form['scr_frame'].place(x=20, y=10)
+
+vars.form['totals_frame'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=110, fg_color='#E5E5E5')
+vars.form['totals_frame'].place(x=20, y=280)
+
+vars.form['gst_label'] = ctk.CTkLabel(vars.root, text="GST @5%", font=gui_font, bg_color='#E5E5E5')
+vars.form['pst_label'] = ctk.CTkLabel(vars.root, text="PST @7%", font=gui_font, bg_color='#E5E5E5')
+vars.form['total_label'] = ctk.CTkLabel(vars.root, text="Total", font=gui_font, bg_color='#E5E5E5')
+vars.form['gst_label'].place(x=30, y=290)
+vars.form['pst_label'].place(x=30, y=320)
+vars.form['total_label'].place(x=30, y=350)
+
+vars.form['gst_amount'] = ctk.CTkLabel(vars.root, text="$0.0", font=gui_font, bg_color='#E5E5E5')
+vars.form['pst_amount'] = ctk.CTkLabel(vars.root, text="$0.0", font=gui_font, bg_color='#E5E5E5')
+vars.form['total_amount'] = ctk.CTkLabel(vars.root, text="$0.0", font=gui_font, bg_color='#E5E5E5')
+vars.form['gst_amount'].place(x=340, y=290)
+vars.form['pst_amount'].place(x=340, y=320)
+vars.form['total_amount'].place(x=340, y=350)
+
+vars.form['description_label'] = ctk.CTkLabel(vars.root, text="Description", font=gui_font)
+vars.form['description_label'].place(x=20, y=460)
+vars.form['description_input'] = ctk.CTkEntry(vars.root, width=130, border_width=1, corner_radius=4)
+vars.form['description_input'].place(x=100, y=460)
 
 
-# set row heights
-for index, row in enumerate(items_table.rows):
-    row.height = CM(1)
-
-make_rows_bold(items_table.rows[0])
-
-#####################################################################################
-
-total_table = doc.add_table(rows=1, cols=5)
-res = calculate_totals(data)
-
-total_table_data = [
-    [str('GST @5%'), '','','', str(res['gst'])],
-    [str('PST @7%'), '','','', str(res['pst'])],
-    [str('TOTAL'), '','','', str(res['dollar'])],
-]
-
-for total_row in total_table_data:
-
-    row = total_table.add_row().cells
-
-    for idx, col in enumerate(total_row):
-        row[idx].text = col 
-
-    make_rows_bold(total_table.rows[-1])
-    # items_table.cell(-1,-0).merge(items_table.cell(-1,1))
-
-
-#####################################################################################
-
-doc.save("invoice-test.docx")
-os.startfile("invoice-test.docx")
+vars.root.mainloop()
