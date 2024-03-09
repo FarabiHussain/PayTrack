@@ -24,11 +24,9 @@ def clear_fields():
     vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
-
-    print(vars.table_row)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
 
     refresh_table_and_amounts
 
@@ -64,9 +62,9 @@ def refresh_table_and_amounts():
     cumulative_pst = 0
     cumulative_total = 0
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
 
     for entry in range(len(vars.items)):
 

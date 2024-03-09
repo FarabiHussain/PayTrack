@@ -23,7 +23,7 @@ y = (vars.screen_sizes['hs']/2) - (h/2)
 os.system("cls")
 vars.root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
-vars.root.title("AMCAIM InGen")
+vars.root.title("AMCAIM PayTrack")
 
 cwd = os.getcwd()
 gui_font = ctk.CTkFont(family="Roboto Bold")
@@ -51,9 +51,9 @@ vars.form['scr_frame_bg'].place(x=20, y=10)
 vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
 vars.form['scr_frame'].place(x=25, y=12)
 
-ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
-ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
-ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
+ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
+ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
+ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
 
 ###############################################
 ## TOTALS SECTION
