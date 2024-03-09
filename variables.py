@@ -1,5 +1,5 @@
 from tkinter import StringVar
-import customtkinter as ctk, os, docx
+import customtkinter as ctk, os
 from PIL import Image
 from path_manager import resource_path
 
@@ -46,6 +46,7 @@ def init():
         "Notary": 30,
         "Affidavit": 100,
         "Invitation Letter": 100,
+        "Government Fees": 50,
     }
 
     drp_list = list(drp_values.keys())
@@ -57,3 +58,4 @@ def init():
 
     # Table data in a form of list
     items = []
+

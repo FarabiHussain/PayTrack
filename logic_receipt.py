@@ -1,23 +1,26 @@
-from doc_utils import *
-from data_utils import *
-from docx.shared import Cm as CM
 import variables as vars
+import docx
+import os
+from logic_records import *
+from doc_utils import *
+from docx.shared import Cm as CM
 from datetime import datetime as dt
+from path_manager import *
 
 
-#
-def generate_invoice_info(document, invoice_id):
+# write the invoice number and date on the top
+def write_invoice_info(document, doc_id):
 
     timestamp = str(dt.now().strftime("%d/%m/%Y, %H:%M"))
 
     insert_paragraph_after(
         document.add_paragraph(),
-        (f"Invoice#:\t{invoice_id}\nDate:\t\t{timestamp}\n"),
+        (f"Invoice#:\t{doc_id}\nDate:\t\t{timestamp}\n"),
     )
 
 
 # itemized table
-def generate_items_table(document, data):
+def write_items_table(document, data):
 
     # Table data in a form of list
     headings = [
@@ -46,7 +49,7 @@ def generate_items_table(document, data):
         row[1].text = str(entry["desc"])
         row[2].text = str(entry["qty"])
         row[3].text = str(entry["rate"])
-        row[4].text = str(entry["qty"] * entry["rate"])
+        row[4].text = str(int(entry["qty"]) * float(entry["rate"]))
 
     # set the table borders
     for cell in items_table.rows[0].cells:
@@ -71,13 +74,17 @@ def generate_items_table(document, data):
 
 
 # table containing taxes and total
-def generate_totals_table(document, totals): 
+def write_totals_table(document): 
     total_table = document.add_table(rows=1, cols=5)
 
+    gst = vars.form['gst_display_amount'].cget("text")
+    pst = vars.form['pst_display_amount'].cget("text")
+    total = vars.form['total_display_amount'].cget("text")
+
     total_table_data = [
-        [str("GST @5%"), "", "", "", str(totals["gst"])],
-        [str("PST @7%"), "", "", "", str(totals["pst"])],
-        [str("TOTAL"), "", "", "", str(totals["dollar"])],
+        [str("GST @5%"), "", "", "", gst],
+        [str("PST @7%"), "", "", "", pst],
+        [str("TOTAL"), "", "", "", total],
     ]
 
     for total_row in total_table_data:
@@ -88,4 +95,20 @@ def generate_totals_table(document, totals):
 
         make_rows_bold(total_table.rows[-1])
 
+
+# combine the above functions to generate the final product
+def generate_invoice(cwd):
+    doc_id = "{:010}".format((read_from_record(cwd) + 1))
+    write_to_record(cwd, doc_id)
+
+    # instance of a word document using the template
+    document = docx.Document(resource_path(cwd + "\\assets\\templates\\receipt.docx"))
+
+    write_invoice_info(document, doc_id)
+    write_items_table(document, vars.items)
+    write_totals_table(document)
+
+    # save the document with the current invoice ID
+    document.save(cwd + "\\output\\receipt_" + doc_id + ".docx")
+    os.startfile(cwd + "\\output\\receipt_" + doc_id + ".docx")
 
