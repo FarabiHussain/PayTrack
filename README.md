@@ -1,5 +1,5 @@
 # PayTrack
-PayTrack provides a GUI for AMCAIM staff that allows easy creation of mayment invoices.
+PayTrack provides a GUI for AMCAIM staff that allows easy creation of payment invoices.
 
 ## Usage
 - download the latest build.
