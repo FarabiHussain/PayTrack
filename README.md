@@ -8,4 +8,4 @@ PayTrack provides a GUI for AMCAIM staff that allows easy creation of mayment in
 
 ## Build manually:
 1. run ```pip install pyinstaller customtkinter docx python-docx``` 
-2. run ```python -m PyInstaller main.py --onefile -w --icon=assets\logo.ico --name="PayTrack"```
+2. run ```python -m PyInstaller main.py --onefile -w --icon=assets\icons\logo.ico --name="PayTrack"```
