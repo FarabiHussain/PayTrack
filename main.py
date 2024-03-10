@@ -1,7 +1,7 @@
 import docx, os
 import variables as vars
 import customtkinter as ctk
-from CTkXYFrame import *
+from ctk_xyframe import *
 from logic_document import *
 from document_utils import *
 from logic_records import *

@@ -1,6 +1,6 @@
 import variables as vars
 import customtkinter as ctk
-from CTkXYFrame import *
+from ctk_xyframe import *
 
 
 # reset all input fields and delete all receipt items
