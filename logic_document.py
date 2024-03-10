@@ -24,7 +24,7 @@ def write_invoice_info(document, doc_id, billed_to):
     else:
         insert_paragraph_after(
             document.add_paragraph(),
-            (f"Payment#\t{doc_id}\nDate\t\t{timestamp}\nBilled to\t{billed_to}"),
+            (f"Payment#\t{doc_id}\nDate\t\t{timestamp}\nBilled to\t{billed_to}\n"),
         )
 
 

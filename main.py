@@ -24,7 +24,7 @@ os.system("cls")
 vars.root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
 vars.root.configure(fg_color='white')
-vars.root.title("AMCAIM PayTrack")
+vars.root.title(f"AMCAIM PayTrack ({vars.form['version']})")
 
 cwd = os.getcwd()
 font_family = vars.font_family
