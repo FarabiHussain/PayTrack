@@ -19,7 +19,7 @@ def write_invoice_info(document, doc_id, billed_to):
     if (len(billed_to.strip()) == 0):
         insert_paragraph_after(
             document.add_paragraph(),
-            (f"Payment#\t{doc_id}\nDate\t\t{timestamp}\n"),
+            (f"Payment#\t{doc_id}\nDate\t\t{timestamp}\n\n"),
         )
     else:
         insert_paragraph_after(
