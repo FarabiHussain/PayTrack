@@ -10,6 +10,7 @@ def clear_fields():
     vars.form["qty_input"].delete(0, "end")
     vars.form["gst_input"].delete(0, "end")
     vars.form["pst_input"].delete(0, "end")
+    vars.form["client_input"].delete(0, "end")
 
     vars.form["rate_input"].insert("end", 500)
     vars.form["qty_input"].insert("end", 1)
@@ -24,9 +25,9 @@ def clear_fields():
     vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
 
     refresh_table_and_amounts
 
@@ -51,7 +52,25 @@ def add_item():
         "pst": pst if len(pst) > 0 else 7.0,
     }
 
-    vars.items.append(new_item)
+    qty_increased = False
+
+    # search for a matching item
+    for curr_item in vars.items:
+
+        # if a match is found, add the qty to that line instead of adding a new row for the new item
+        if (
+            curr_item['desc'] == new_item['desc']
+            and float(curr_item['rate']) == float(new_item['rate'])
+            and float(curr_item['gst']) == float(new_item['gst'])
+            and float(curr_item['pst']) == float(new_item['pst'])
+        ):
+            curr_item['qty'] = str(int(curr_item['qty']) + int(new_item['qty']))
+            qty_increased = True
+            break
+
+    # a match was not found, so we create a new row for the new item
+    if not qty_increased:
+        vars.items.append(new_item)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
     refresh_table_and_amounts()
 
@@ -62,9 +81,9 @@ def refresh_table_and_amounts():
     cumulative_pst = 0
     cumulative_total = 0
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='gray', text_color='white').grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='gray', text_color='white').grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='gray', text_color='white').grid(row=0, column=2, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
 
     for entry in range(len(vars.items)):
 
@@ -86,10 +105,10 @@ def refresh_table_and_amounts():
         row_gst_amount = float((row_rate/100)*row_gst)
         row_pst_amount = float((row_rate/100)*row_pst)
 
-        total_row_charge = (row_rate*row_qty) + row_gst_amount + row_pst_amount
+        total_row_charge = (row_rate + row_gst_amount + row_pst_amount)*row_qty
 
-        cumulative_gst += row_gst_amount
-        cumulative_pst += row_pst_amount
+        cumulative_gst += row_gst_amount*row_qty
+        cumulative_pst += row_pst_amount*row_qty
         cumulative_total += total_row_charge
 
         vars.form['gst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_gst))

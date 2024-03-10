@@ -6,7 +6,7 @@ from path_manager import resource_path
 
 ## initalize the variables to be used throughout the app
 def init():
-    global screen_sizes, form, root, popups, cwd, icons, items
+    global screen_sizes, form, root, popups, cwd, icons, items, font_family, search_window
     global drp_values, drp_list, drp_str_var
     global cumulative_gst, cumulative_pst, cumulative_total
 
@@ -16,17 +16,20 @@ def init():
     ctk.set_default_color_theme("dark-blue")
     root = ctk.CTk()
     root.resizable(False, False)
+    font_family = ctk.CTkFont(family="Roboto Bold")
 
     screen_sizes = {"ws": root.winfo_screenwidth(), "hs": root.winfo_screenheight()}
-    form = {"version": "v1.0.0", "status": StringVar(value="Ready")}
+    form = {}
     popups = {"printer": None, "history": None, "elem": {}}
 
     icons = {}
     icons_specs = {
         "folder": None,
         "clear": None,
+        "search": None,
         "docx": None,
         "add": None,
+        "open": None,
     }
 
     # define the
@@ -35,10 +38,14 @@ def init():
             resource_path("assets\\icons\\" + icon_name + ".png")
         )
 
+        img_size = icons_specs[icon_name].size
+        img_ratio = img_size[0]/img_size[1]
+
         icons[icon_name] = ctk.CTkImage(
             light_image=None,
             dark_image=icons_specs[icon_name],
-            size=icons_specs[icon_name].size,
+            # size=icons_specs[icon_name].size,
+            size=(25*img_ratio, 25),
         )
 
     drp_values = {
@@ -58,4 +65,8 @@ def init():
 
     # Table data in a form of list
     items = []
+
+    search_window = {
+        "popup": None
+    }
 
