@@ -56,8 +56,6 @@ screen_h = str(vars.screen_sizes['hs'])
 xyframe_sizes = {
     '4500': 700,
     '3000': 480,
-    '1920': 330,
-    '1080': 230
 }
 
 vars.form['scr_frame_bg'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=250, fg_color='#E5E5E5')
