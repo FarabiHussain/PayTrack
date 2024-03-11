@@ -50,8 +50,8 @@ vars.form['output_btn'].place(x=344, y=545)
 ## FRAMES
 ##############################################################################################
 
-screen_w = vars.screen_sizes['ws']
-screen_h = vars.screen_sizes['hs']
+screen_w = str(vars.screen_sizes['ws'])
+screen_h = str(vars.screen_sizes['hs'])
 
 xyframe_sizes = {
     '4500': 700,
@@ -62,7 +62,7 @@ xyframe_sizes = {
 
 vars.form['scr_frame_bg'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=250, fg_color='#E5E5E5')
 vars.form['scr_frame_bg'].place(x=20, y=10)
-vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[str(screen_w)], height=xyframe_sizes[str(screen_h)])
+vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 330, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 230)
 vars.form['scr_frame'].place(x=25, y=12)
 
 ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=font_family).grid(row=0, column=0, pady=5, padx=5)
