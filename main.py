@@ -20,10 +20,7 @@ w = 400
 x = (vars.screen_sizes['ws']/2) - (w/2)
 y = (vars.screen_sizes['hs']/2) - (h/2)
 
-
 os.system("cls")
-print(vars.screen_sizes['ws'])
-print(vars.screen_sizes['hs'])
 vars.root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
 vars.root.configure(fg_color='white')
