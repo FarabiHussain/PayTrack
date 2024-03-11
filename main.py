@@ -60,7 +60,6 @@ xyframe_sizes = {
 
 vars.form['scr_frame_bg'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=250, fg_color='#E5E5E5')
 vars.form['scr_frame_bg'].place(x=20, y=10)
-# vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 330, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 230)
 vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
 vars.form['scr_frame'].place(x=25, y=12)
 

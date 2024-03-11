@@ -2,6 +2,13 @@ import variables as vars
 import customtkinter as ctk
 from ctk_xyframe import *
 
+screen_w = str(vars.screen_sizes['ws'])
+screen_h = str(vars.screen_sizes['hs'])
+
+xyframe_sizes = {
+    '1920': 330,
+    '1080': 230,
+}
 
 # reset all input fields and delete all receipt items
 def clear_fields():
@@ -22,7 +29,7 @@ def clear_fields():
 
     vars.items = []
     vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
     vars.form['scr_frame'].place(x=25, y=12)
 
     ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
@@ -35,7 +42,7 @@ def clear_fields():
 # read from input fields and add a new item to the receipt
 def add_item():
     vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
     vars.form['scr_frame'].place(x=25, y=12)
 
     desc = vars.form['description_combo'].get()
