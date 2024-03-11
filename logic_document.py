@@ -107,6 +107,11 @@ def write_totals_table(document):
 
 # combine the above functions to generate the final product
 def generate_invoice(cwd):
+
+    if len(vars.items) < 1:
+        popup(title="", message='Add at least one item (using the green "+" button) to generate a receipt.', corner_radius=2)
+        return False
+
     doc_id = "{:010}".format((read_from_record(cwd) + 1))
     client_name = (vars.form['client_input'].get()).strip().lower().replace(" ", "_")
     write_to_record(cwd, doc_id, client_name)
