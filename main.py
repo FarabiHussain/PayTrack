@@ -52,7 +52,7 @@ vars.form['output_btn'].place(x=344, y=545)
 
 vars.form['scr_frame_bg'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=250, fg_color='#E5E5E5')
 vars.form['scr_frame_bg'].place(x=20, y=10)
-vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=vars.screen_sizes['ws']*0.172, height=vars.screen_sizes['hs']*0.213)
 vars.form['scr_frame'].place(x=25, y=12)
 
 ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=font_family).grid(row=0, column=0, pady=5, padx=5)
