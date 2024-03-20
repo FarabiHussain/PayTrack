@@ -1,3 +1,4 @@
+from tkinter import StringVar
 import docx, os
 import variables as vars
 import customtkinter as ctk
@@ -15,7 +16,7 @@ from path_manager import *
 vars.init()
 
 # calculate x and y coordinates for the Tk root window
-h = 600
+h = 640
 w = 400
 x = (vars.screen_sizes['ws']/2) - (w/2)
 y = (vars.screen_sizes['hs']/2) - (h/2)
@@ -39,12 +40,14 @@ vars.form['clear_btn'] = ctk.CTkButton(vars.root, text="", image=vars.icons['cle
 vars.form['search_btn'] = ctk.CTkButton(vars.root, text="", image=vars.icons['search'], border_width=0, corner_radius=4, fg_color="#ff9900", command=lambda:search_documents(), width=36, height=36)
 vars.form['docx_btn'] = ctk.CTkButton(vars.root, text="", image=vars.icons['docx'], border_width=0, corner_radius=4, fg_color="#383FBC", command=lambda:generate_invoice(cwd), width=36, height=36)
 vars.form['output_btn'] = ctk.CTkButton(vars.root, text="", image=vars.icons['folder'], border_width=0, corner_radius=4, fg_color="#808080", command=lambda:os.startfile(cwd + "\\output"), width=36, height=36)
+vars.form['adjust_btn'] = ctk.CTkButton(vars.root, text="adjust rate", border_width=0, corner_radius=4, fg_color="#23265e", command=lambda:adjust_rate(), width=56, height=28)
 
-vars.form['add_btn'].place(x=20, y=545)
-vars.form['clear_btn'].place(x=60, y=545)
-vars.form['search_btn'].place(x=100, y=545)
-vars.form['docx_btn'].place(x=304, y=545)
-vars.form['output_btn'].place(x=344, y=545)
+vars.form['add_btn'].place(x=20, y=h-55)
+vars.form['clear_btn'].place(x=60, y=h-55)
+vars.form['search_btn'].place(x=100, y=h-55)
+vars.form['docx_btn'].place(x=304, y=h-55)
+vars.form['output_btn'].place(x=344, y=h-55)
+vars.form['adjust_btn'].place(x=310, y=540)
 
 ##############################################################################################
 ## FRAMES
@@ -102,28 +105,39 @@ vars.form['description_combo'] = ctk.CTkComboBox(vars.root, border_width=1, corn
 vars.form['description_combo'].place(x=70, y=420)
 vars.form['description_combo'].set("Immigration Services")
 
-vars.form['rate_label'] = ctk.CTkLabel(vars.root, text="Rate", font=font_family)
-vars.form['rate_label'].place(x=20, y=460)
-vars.form['rate_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4)
-vars.form['rate_input'].insert("end", '500')
-vars.form['rate_input'].place(x=70, y=460)
-
+vars.form['qty_textvariable'] = StringVar(value='1')
+vars.form['qty_textvariable'].trace('w', update_total)
 vars.form['qty_label'] = ctk.CTkLabel(vars.root, text="QTY", font=font_family)
-vars.form['qty_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4)
-vars.form['qty_input'].insert("end", '1')
+vars.form['qty_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4, textvariable=vars.form['qty_textvariable'])
 vars.form['qty_label'].place(x=220, y=460)
 vars.form['qty_input'].place(x=260, y=460)
 
+vars.form['gst_textvariable'] = StringVar(value='5.0')
+vars.form['gst_textvariable'].trace('w', update_total)
 vars.form['gst_label'] = ctk.CTkLabel(vars.root, text="GST", font=font_family)
-vars.form['pst_label'] = ctk.CTkLabel(vars.root, text="PST", font=font_family)
 vars.form['gst_label'].place(x=20, y=500)
-vars.form['pst_label'].place(x=220, y=500)
-
-vars.form['gst_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4)
-vars.form['gst_input'].insert("end", '5.0')
-vars.form['pst_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4)
-vars.form['pst_input'].insert("end", '7.0')
+vars.form['gst_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4, textvariable=vars.form['gst_textvariable'])
 vars.form['gst_input'].place(x=70, y=500)
+
+vars.form['pst_textvariable'] = StringVar(value='7.0')
+vars.form['pst_textvariable'].trace('w', update_total)
+vars.form['pst_label'] = ctk.CTkLabel(vars.root, text="PST", font=font_family)
+vars.form['pst_label'].place(x=220, y=500)
+vars.form['pst_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4, textvariable=vars.form['pst_textvariable'])
 vars.form['pst_input'].place(x=260, y=500)
+
+vars.form['rate_textvariable'] = StringVar(value='500.0')
+vars.form['rate_textvariable'].trace('w', update_total)
+vars.form['rate_label'] = ctk.CTkLabel(vars.root, text="Rate", font=font_family)
+vars.form['rate_label'].place(x=20, y=460)
+vars.form['rate_input'] = ctk.CTkEntry(vars.root, width=120, border_width=1, corner_radius=4, textvariable=vars.form['rate_textvariable'])
+vars.form['rate_input'].place(x=70, y=460)
+
+vars.form['total_label'] = ctk.CTkLabel(vars.root, text="Total", font=font_family)
+vars.form['total_label'].place(x=20, y=540)
+vars.form['total_input'] = ctk.CTkEntry(vars.root, width=230, border_width=1, corner_radius=4)
+vars.form['total_input'].place(x=70, y=540)
+vars.form['total_input'].insert('end', '560.0')
+
 
 vars.root.mainloop()

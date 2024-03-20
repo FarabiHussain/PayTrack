@@ -113,7 +113,7 @@ def build_exe(cwd, ver):
 
 ## replace the app version in `variables.py` with the selected version 
 def set_version(ver):
-    version_regex = "[0-9]+.[0-9]+.[0-9]+"
+    version_regex = "v[0-9]+.[0-9]+.[0-9]+"
 
     # iterate through the file, attempt to find version_regex
     for line in fileinput.input('variables.py', inplace=1):
@@ -121,7 +121,7 @@ def set_version(ver):
 
         # if version_regex is found, replace it with the newly selected version number
         if (ver_match is not None):
-            line = line.replace(ver_match.group(), (".").join(ver))
+            line = line.replace(ver_match.group(), f"v{(".").join(ver)}")
 
         # write all lines into file so that nothing else is changed
         sys.stdout.write(line)

@@ -19,7 +19,7 @@ def init():
     font_family = ctk.CTkFont(family="Roboto Bold")
 
     screen_sizes = {"ws": root.winfo_screenwidth(), "hs": root.winfo_screenheight()}
-    form = {"version": "v0.0.4"}
+    form = {"version": "v0.0.5"}
     popups = {"printer": None, "history": None, "elem": {}}
 
     icons = {}
@@ -49,11 +49,11 @@ def init():
         )
 
     drp_values = {
-        "Immigration Services": 500,
-        "Notary": 30,
-        "Affidavit": 100,
-        "Invitation Letter": 100,
-        "Government Fees": 50,
+        "Immigration Services": 500.0,
+        "Notary": 30.0,
+        "Affidavit": 100.0,
+        "Invitation Letter": 100.0,
+        "Government Fees": 50.0,
     }
 
     drp_list = list(drp_values.keys())

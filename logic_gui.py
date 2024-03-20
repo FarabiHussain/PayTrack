@@ -9,17 +9,11 @@ xyframe_sizes = {
 
 # reset all input fields and delete all receipt items
 def clear_fields():
-    vars.form["rate_input"].delete(0, "end")
     vars.form['description_combo'].set("Immigration Services")
-    vars.form["qty_input"].delete(0, "end")
-    vars.form["gst_input"].delete(0, "end")
-    vars.form["pst_input"].delete(0, "end")
-    vars.form["client_input"].delete(0, "end")
-
-    vars.form["rate_input"].insert("end", 500)
-    vars.form["qty_input"].insert("end", 1)
-    vars.form["gst_input"].insert("end", 5.0)
-    vars.form["pst_input"].insert("end", 7.0)
+    vars.form['rate_textvariable'].set("500")
+    vars.form['qty_textvariable'].set("1")
+    vars.form['gst_textvariable'].set("5.0")
+    vars.form['pst_textvariable'].set("7.0")
     vars.form["gst_display_amount"].configure(text="$0.00")
     vars.form["pst_display_amount"].configure(text="$0.00")
     vars.form["total_display_amount"].configure(text="$0.00")
@@ -105,7 +99,7 @@ def refresh_table_and_amounts():
 
             ctk.CTkLabel(vars.form['scr_frame'], text=vars.items[entry][col_name], fg_color='white', corner_radius=4, width=col_width).grid(row=(entry + 1), column=col_idx, pady=5, padx=5)
 
-        row_rate = int(vars.items[entry]['rate'])
+        row_rate = float(vars.items[entry]['rate'])
         row_qty = int(vars.items[entry]['qty'])
         row_gst = float(vars.items[entry]['gst'])
         row_pst = float(vars.items[entry]['pst'])
@@ -130,3 +124,44 @@ def refresh_table_and_amounts():
 def update_fields(choice):
     vars.form['rate_input'].delete(0, "end")
     vars.form['rate_input'].insert("end", vars.drp_values[choice])
+
+
+def update_total(*args):
+
+    try:
+        rate = float(vars.form['rate_textvariable'].get())
+        qty = float(vars.form['qty_input'].get())
+        taxes = float(vars.form['gst_input'].get()) + float(vars.form['pst_input'].get())
+
+        total = 0
+        total += rate * (taxes / 100)
+        total += rate
+        total *= qty
+
+        vars.form['total_input'].delete('0', 'end')
+        vars.form['total_input'].insert('end', str(total))
+
+    except Exception as e:
+        print(e)
+        vars.form['total_input'].delete('0', 'end')
+        vars.form['total_input'].insert('end', str(''))
+
+
+def adjust_rate():
+
+    try:
+        total = float(vars.form['total_input'].get())
+        qty = float(vars.form['qty_input'].get())
+        taxes = (float(vars.form['gst_input'].get()) + float(vars.form['pst_input'].get())) / 100
+
+        rate = 0
+        rate += (total / (1 + taxes)) / qty
+
+        vars.form['rate_textvariable'].set(str(round(rate, 2)))
+        vars.form['total_input'].delete('0', 'end')
+        vars.form['total_input'].insert('end', str(total))
+
+    except Exception as e:
+        print(e)
+        # vars.form['total_input'].delete('0', 'end')
+        # vars.form['total_input'].insert('end', str(''))
