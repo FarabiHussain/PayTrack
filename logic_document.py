@@ -5,6 +5,7 @@ import customtkinter as ctk
 from glob import glob
 from logic_records import *
 from document_utils import *
+from logic_gui import *
 from docx.shared import Cm as CM
 from datetime import datetime as dt
 from path_manager import *
@@ -110,6 +111,9 @@ def generate_invoice(cwd):
 
     if len(vars.items) < 1:
         popup(title="", message='Add at least one item (using the green "+" button) to generate a receipt.', corner_radius=2)
+        return False
+    
+    if check_special([vars.form['client_textvariable'].get()], is_string=True) is False:
         return False
 
     doc_id = "{:010}".format((read_from_record(cwd) + 1))

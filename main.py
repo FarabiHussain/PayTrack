@@ -56,14 +56,9 @@ vars.form['adjust_btn'].place(x=310, y=540)
 screen_w = str(vars.screen_sizes['ws'])
 screen_h = str(vars.screen_sizes['hs'])
 
-xyframe_sizes = {
-    '1920': 330,
-    '1080': 230,
-}
-
 vars.form['scr_frame_bg'] = ctk.CTkFrame(vars.root, corner_radius=4, border_width=1, width=360, height=250, fg_color='#E5E5E5')
 vars.form['scr_frame_bg'].place(x=20, y=10)
-vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
+vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=335, height=230)
 vars.form['scr_frame'].place(x=25, y=12)
 
 ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=font_family).grid(row=0, column=0, pady=5, padx=5)
@@ -94,9 +89,10 @@ vars.form['total_display_amount'].place(x=250, y=350-14)
 ## INPUT SECTION
 ##############################################################################################
 
+vars.form['client_textvariable'] = StringVar(value='')
 vars.form['client_label'] = ctk.CTkLabel(vars.root, text="Client", font=font_family)
 vars.form['client_label'].place(x=20, y=380)
-vars.form['client_input'] = ctk.CTkEntry(vars.root, width=310, border_width=1, corner_radius=4)
+vars.form['client_input'] = ctk.CTkEntry(vars.root, width=310, border_width=1, corner_radius=4, textvariable=vars.form['client_textvariable'])
 vars.form['client_input'].place(x=70, y=380)
 
 vars.form['description_label'] = ctk.CTkLabel(vars.root, text="Desc", font=font_family)

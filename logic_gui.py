@@ -1,11 +1,8 @@
 import variables as vars
 import customtkinter as ctk
+import re
 from ctk_xyframe import *
-
-xyframe_sizes = {
-    '1920': 330,
-    '1080': 230,
-}
+from CTkMessagebox import CTkMessagebox as popup
 
 # reset all input fields and delete all receipt items
 def clear_fields():
@@ -18,11 +15,9 @@ def clear_fields():
     vars.form["pst_display_amount"].configure(text="$0.00")
     vars.form["total_display_amount"].configure(text="$0.00")
 
-    screen_w = str(vars.screen_sizes['ws'])
-    screen_h = str(vars.screen_sizes['hs'])
     vars.items = []
     vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
+    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
 
     ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
@@ -34,17 +29,23 @@ def clear_fields():
 
 # read from input fields and add a new item to the receipt
 def add_item():
-    screen_w = str(vars.screen_sizes['ws'])
-    screen_h = str(vars.screen_sizes['hs'])
-    vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = CTkXYFrame(vars.root, corner_radius=0, border_width=0, width=xyframe_sizes[screen_w] if screen_w in xyframe_sizes else 700, height=xyframe_sizes[screen_h] if screen_h in xyframe_sizes else 480)
-    vars.form['scr_frame'].place(x=25, y=12)
-
     desc = vars.form['description_combo'].get()
-    rate = vars.form['rate_input'].get()
-    qty = vars.form['qty_input'].get()
-    gst = vars.form['gst_input'].get()
-    pst = vars.form['pst_input'].get()
+    rate = vars.form['rate_textvariable'].get()
+    qty = vars.form['qty_textvariable'].get()
+    gst = vars.form['gst_textvariable'].get()
+    pst = vars.form['pst_textvariable'].get()
+    total = vars.form['total_input'].get()
+
+    variables = [rate, qty, gst, pst, total]
+
+    is_valid = check_special(variables) and check_alphabets(variables) and check_empty(variables)
+
+    if not is_valid:
+        return
+
+    vars.form['scr_frame'].destroy()
+    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+    vars.form['scr_frame'].place(x=25, y=12)
 
     new_item = {
         "desc": desc,
@@ -72,7 +73,7 @@ def add_item():
 
     # a match was not found, so we create a new row for the new item
     if not qty_increased:
-        vars.items.append(new_item)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+        vars.items.append(new_item)
 
     refresh_table_and_amounts()
 
@@ -130,9 +131,11 @@ def update_total(*args):
 
     try:
         rate = float(vars.form['rate_textvariable'].get())
-        qty = float(vars.form['qty_input'].get())
-        taxes = float(vars.form['gst_input'].get()) + float(vars.form['pst_input'].get())
+        qty = float(vars.form['qty_textvariable'].get())
+        gst = float(vars.form['gst_textvariable'].get())
+        pst = float(vars.form['pst_textvariable'].get())
 
+        taxes = gst + pst
         total = 0
         total += rate * (taxes / 100)
         total += rate
@@ -149,6 +152,11 @@ def update_total(*args):
 
 def adjust_rate():
 
+    total = vars.form['total_input'].get()
+
+    if (check_special([total]) == False or check_alphabets([total]) == False):
+        return
+
     try:
         total = float(vars.form['total_input'].get())
         qty = float(vars.form['qty_input'].get())
@@ -163,5 +171,36 @@ def adjust_rate():
 
     except Exception as e:
         print(e)
-        # vars.form['total_input'].delete('0', 'end')
-        # vars.form['total_input'].insert('end', str(''))
+
+
+def check_special(variables, is_string = False):
+    special_chars_list = ["\\", "/", ":", "*", "?", "\"", "<", ">" ,"|"]
+
+    if (is_string is False):
+        special_chars_list.append(",")
+        special_chars_list.append(" ")
+
+    for var in variables:
+        if any(bad_char in var for bad_char in special_chars_list):
+            popup(title="", message=f'Special characters cannot be used.', corner_radius=2)
+            return False
+        
+    return True
+
+
+def check_alphabets(variables):
+    for var in variables:
+        if re.search('[A-Za-z]', var) is not None:
+            popup(title="", message=f'Only Client and Desc fields can contain alphabets.', corner_radius=2)
+            return False
+        
+    return True
+
+
+def check_empty(variables):
+    for var in variables:
+        if len(var) < 1:
+            popup(title="", message=f'Fields must not be empty.', corner_radius=2)
+            return False
+
+    return True
