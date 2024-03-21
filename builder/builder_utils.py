@@ -71,7 +71,7 @@ def build_exe(cwd, ver):
     ## build the exe from py files
     os.system("cls")
     print("building exe...")
-    check_call(['python', '-m', 'PyInstaller', 'main.py', '--noconsole', '--onefile', '-w', '--icon=' + cwd + '\\assets\\icons\\logo.ico', f'--name={((os.getcwd()).split("\\")[-1])}'], stdout=DEVNULL, stderr=STDOUT)
+    check_call(['python', '-m', 'PyInstaller', 'main.py', '--noconsole', '--onefile', '-w', '--icon=' + cwd.replace("\\builder", "") + '\\assets\\icons\\logo.ico', f'--name={((os.getcwd()).split("\\")[-1])}'], stdout=DEVNULL, stderr=STDOUT)
     print("done")
 
     ## after the exe is built, copy over the assets folder
@@ -112,11 +112,13 @@ def build_exe(cwd, ver):
 
 
 ## replace the app version in `variables.py` with the selected version 
-def set_version(ver):
+def set_version(cwd, ver):
+    variables_dir = (cwd + '\\variables.py').replace('\\builder', '')
+    print(variables_dir)
     version_regex = "v[0-9]+.[0-9]+.[0-9]+"
 
     # iterate through the file, attempt to find version_regex
-    for line in fileinput.input('variables.py', inplace=1):
+    for line in fileinput.input(variables_dir, inplace=1):
         ver_match = re.search(version_regex, line)
 
         # if version_regex is found, replace it with the newly selected version number
