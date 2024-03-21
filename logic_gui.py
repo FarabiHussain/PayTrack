@@ -140,7 +140,7 @@ def update_fields(choice):
     vars.form['pst_input'].insert("end", "7.0")
 
 
-#
+# update the total amount field for an item based on the rate, qty, gst, pst
 def update_total(*args):
 
     try:
@@ -166,7 +166,7 @@ def update_total(*args):
         vars.form['add_btn'].configure(state="disabled", fg_color="#e0e0e0")
 
 
-#
+# calculate the rate before taxes based on the entered total
 def adjust_rate():
 
     total = vars.form['total_input'].get()
@@ -190,7 +190,7 @@ def adjust_rate():
         print(e)
 
 
-#
+# perform a check for the presence of special characters
 def check_special(variables, is_string = False):
     special_chars_list = ["\\", "/", ":", "*", "?", "\"", "<", ">" ,"|"]
 
@@ -206,8 +206,8 @@ def check_special(variables, is_string = False):
     return True
 
 
-#
-def check_alphabets(variables):
+# perform a check for the presence of alphabets in the fields
+def check_alphabets(variables: list):
     for var in variables:
         if re.search('[A-Za-z]', var) is not None:
             popup(title="", message=f'Only Client and Desc fields can contain alphabets.', corner_radius=2)
@@ -216,8 +216,8 @@ def check_alphabets(variables):
     return True
 
 
-#
-def check_empty(variables):
+# perform a check for an empty string
+def check_empty(variables: list):
     for var in variables:
         if len(var) < 1:
             popup(title="", message=f'Fields must not be empty.', corner_radius=2)

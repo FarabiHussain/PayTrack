@@ -19,7 +19,7 @@ def init():
     font_family = ctk.CTkFont(family="Roboto Bold")
 
     screen_sizes = {"ws": root.winfo_screenwidth(), "hs": root.winfo_screenheight()}
-    form = {"version": "v0.0.5"}
+    form = {"version": "v0.0.6"}
     popups = {"printer": None, "history": None, "elem": {}}
 
     icons = {}
