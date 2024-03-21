@@ -4,6 +4,7 @@ import re
 from ctk_xyframe import *
 from CTkMessagebox import CTkMessagebox as popup
 
+
 # reset all input fields and delete all receipt items
 def clear_fields():
     vars.form['description_combo'].set("Immigration Services")
@@ -17,12 +18,12 @@ def clear_fields():
 
     vars.items = []
     vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=335, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
 
     refresh_table_and_amounts
 
@@ -44,7 +45,7 @@ def add_item():
         return
 
     vars.form['scr_frame'].destroy()
-    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=330, height=230)
+    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=335, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
 
     new_item = {
@@ -84,9 +85,9 @@ def refresh_table_and_amounts():
     cumulative_pst = 0
     cumulative_total = 0
 
-    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=4, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=4, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
-    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=4, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
+    ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
 
     for entry in range(len(vars.items)):
 
@@ -98,7 +99,7 @@ def refresh_table_and_amounts():
             elif (col_idx == 1):
                 col_width = 50
 
-            ctk.CTkLabel(vars.form['scr_frame'], text=vars.items[entry][col_name], fg_color='white', corner_radius=4, width=col_width).grid(row=(entry + 1), column=col_idx, pady=5, padx=5)
+            ctk.CTkLabel(vars.form['scr_frame'], text=vars.items[entry][col_name], fg_color='white', corner_radius=2, width=col_width).grid(row=(entry + 1), column=col_idx, pady=5, padx=5)
 
         row_rate = float(vars.items[entry]['rate'])
         row_qty = int(vars.items[entry]['qty'])
@@ -118,7 +119,7 @@ def refresh_table_and_amounts():
         vars.form['pst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_pst))
         vars.form['total_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_total))
 
-        ctk.CTkLabel(vars.form['scr_frame'], text='{:,.2f}'.format(total_row_charge), fg_color='white', corner_radius=4, width=80).grid(row=(entry + 1), column=(col_idx + 1), pady=5, padx=5)
+        ctk.CTkLabel(vars.form['scr_frame'], text='{:,.2f}'.format(total_row_charge), fg_color='white', corner_radius=2, width=80).grid(row=(entry + 1), column=(col_idx + 1), pady=5, padx=5)
 
 
 # callback for when an item is selected from the dropdown menu
@@ -126,7 +127,20 @@ def update_fields(choice):
     vars.form['rate_input'].delete(0, "end")
     vars.form['rate_input'].insert("end", vars.drp_values[choice])
 
+    if (choice == "Government Fees"):
+        vars.form['gst_input'].delete(0, "end")
+        vars.form['pst_input'].delete(0, "end")
+        vars.form['gst_input'].insert("end", "0.0")
+        vars.form['pst_input'].insert("end", "0.0")
+        return
 
+    vars.form['gst_input'].delete(0, "end")
+    vars.form['pst_input'].delete(0, "end")
+    vars.form['gst_input'].insert("end", "5.0")
+    vars.form['pst_input'].insert("end", "7.0")
+
+
+#
 def update_total(*args):
 
     try:
@@ -143,13 +157,16 @@ def update_total(*args):
 
         vars.form['total_input'].delete('0', 'end')
         vars.form['total_input'].insert('end', str(total))
+        vars.form['add_btn'].configure(state="normal", fg_color="#38bc41")
 
     except Exception as e:
         print(e)
         vars.form['total_input'].delete('0', 'end')
         vars.form['total_input'].insert('end', str(''))
+        vars.form['add_btn'].configure(state="disabled", fg_color="#e0e0e0")
 
 
+#
 def adjust_rate():
 
     total = vars.form['total_input'].get()
@@ -173,6 +190,7 @@ def adjust_rate():
         print(e)
 
 
+#
 def check_special(variables, is_string = False):
     special_chars_list = ["\\", "/", ":", "*", "?", "\"", "<", ">" ,"|"]
 
@@ -182,12 +200,13 @@ def check_special(variables, is_string = False):
 
     for var in variables:
         if any(bad_char in var for bad_char in special_chars_list):
-            popup(title="", message=f'Special characters cannot be used.', corner_radius=2)
+            popup(title="", message=f'The following special characters cannot be used:\n{(" ").join(special_chars_list)}', corner_radius=2)
             return False
         
     return True
 
 
+#
 def check_alphabets(variables):
     for var in variables:
         if re.search('[A-Za-z]', var) is not None:
@@ -197,6 +216,7 @@ def check_alphabets(variables):
     return True
 
 
+#
 def check_empty(variables):
     for var in variables:
         if len(var) < 1:

@@ -225,30 +225,29 @@ def search_documents():
         y = (vars.screen_sizes['hs']/2) - (h/2)
 
         ctk.CTkFrame(
-            vars.search_window['popup'], corner_radius=4, border_width=1, width=260, height=70, fg_color='white'
+            vars.search_window['popup'], corner_radius=2, border_width=1, width=260, height=70, fg_color='white'
         ).place(x=20, y=140)
 
         ctk.CTkLabel(vars.search_window['popup'], text="Document ID", bg_color='#E5E5E5', font=vars.font_family).place(x=20, y=5)
-        vars.search_window['doc_id_search'] = ctk.CTkEntry(vars.search_window['popup'], width=260, border_width=1, corner_radius=4, placeholder_text="leading zeros are optional")
+        vars.search_window['doc_id_search'] = ctk.CTkEntry(vars.search_window['popup'], width=260, border_width=1, corner_radius=2, placeholder_text="leading zeros are optional")
         vars.search_window['doc_id_search'].place(x=20, y=30)
 
         ctk.CTkLabel(vars.search_window['popup'], text="Client Name", bg_color='#E5E5E5', font=vars.font_family).place(x=20, y=65)
-        vars.search_window['client_name_search'] = ctk.CTkEntry(vars.search_window['popup'], width=260, border_width=1, corner_radius=4, placeholder_text="full or partial name")
+        vars.search_window['client_name_search'] = ctk.CTkEntry(vars.search_window['popup'], width=260, border_width=1, corner_radius=2, placeholder_text="full or partial name")
         vars.search_window['client_name_search'].place(x=20, y=90)
 
         ctk.CTkLabel(vars.search_window['popup'], text="Documents to open", bg_color='#E5E5E5', font=vars.font_family).place(x=40, y=145)
-        # ctk.CTkFrame(vars.search_window['popup'], corner_radius=4, border_width=1, width=32, height=32, fg_color='white').place(x=79, y=169)
-        vars.search_window['qty_of_docs_to_open'] = ctk.CTkLabel(vars.search_window['popup'], width=28, height=28, corner_radius=4, text="05", fg_color='#DDDDDD', font=vars.font_family)
+        vars.search_window['qty_of_docs_to_open'] = ctk.CTkLabel(vars.search_window['popup'], width=28, height=28, corner_radius=2, text="05", fg_color='#DDDDDD', font=vars.font_family)
         vars.search_window['qty_of_docs_to_open'].place(x=80, y=170)
 
-        vars.search_window['minus_button'] = ctk.CTkButton(vars.search_window['popup'], text="-", border_width=0, corner_radius=4, fg_color="#23265e", command=lambda:change_doc_count(-1), height=28, width=30)
+        vars.search_window['minus_button'] = ctk.CTkButton(vars.search_window['popup'], text="-", border_width=0, corner_radius=2, fg_color="#23265e", command=lambda:change_doc_count(-1), height=28, width=30)
         vars.search_window['minus_button'].place(x=40, y=170)
 
-        vars.search_window['plus_button'] = ctk.CTkButton(vars.search_window['popup'], text="+", border_width=0, corner_radius=4, fg_color="#23265e", command=lambda:change_doc_count(+1), height=28, width=30)
+        vars.search_window['plus_button'] = ctk.CTkButton(vars.search_window['popup'], text="+", border_width=0, corner_radius=2, fg_color="#23265e", command=lambda:change_doc_count(+1), height=28, width=30)
         vars.search_window['plus_button'].place(x=120, y=170)
 
         ctk.CTkButton(
-            vars.search_window['popup'], text="", image=vars.icons['open'], border_width=0, corner_radius=4, fg_color="#23265e", command=lambda:open_doc_by_filter(), width=72, height=42
+            vars.search_window['popup'], text="", image=vars.icons['open'], border_width=0, corner_radius=2, fg_color="#23265e", command=lambda:open_doc_by_filter(), width=72, height=42
         ).place(x=188, y=156)
 
         ## render the popup

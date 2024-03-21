@@ -28,7 +28,7 @@ def init():
         "clear": None,
         "search": None,
         "docx": None,
-        "add": None,
+        "add_item": None,
         "open": None,
     }
 
