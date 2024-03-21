@@ -25,7 +25,7 @@ def write_to_record(cwd, doc_id, client_name):
 
     try:
         with open(records_file, 'a') as log_file:
-            log_file.write(f"[{dt.now().strftime("%d/%m/%Y-%H:%M:%I")}],{str(doc_id)},{client_name}\n")
+            log_file.write(f"[{dt.now().strftime("%d/%m/%Y-%H:%M:%I")}],[{str(doc_id)}],{client_name},{os.environ['COMPUTERNAME']}\n")
 
     except Exception as e:
         print(e)
@@ -39,7 +39,7 @@ def read_from_record(cwd):
         with open(records_file, 'r') as log_file:
             doc_id = log_file.readlines()[-1]
             doc_id = doc_id.split(",")[1]
-            doc_id = int(doc_id)
+            doc_id = doc_id.replace("[","").replace("]","")
 
             return int(doc_id)
 

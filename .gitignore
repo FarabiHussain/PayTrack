@@ -5,6 +5,7 @@
 /build
 /dist
 /releases
+/output
 *.spec
 *.zip
 *.pdf

@@ -22,7 +22,7 @@ if '--selector' not in sys.argv:
     for i in range(len(ver)):
         ver[i] = unformat(ver[i])
 
-    set_version(ver)
+    set_version(cwd, ver)
     build_exe(cwd, ver)
 
 else:

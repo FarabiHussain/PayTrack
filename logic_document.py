@@ -110,14 +110,14 @@ def write_totals_table(document):
 def generate_invoice(cwd):
 
     if len(vars.items) < 1:
-        popup(title="", message='Add at least one item (using the green "+" button) to generate a receipt.', corner_radius=2)
+        popup(title="", message='Add at least one item to create a document.', corner_radius=2)
         return False
     
     if check_special([vars.form['client_textvariable'].get()], is_string=True) is False:
         return False
 
     doc_id = "{:010}".format((read_from_record(cwd) + 1))
-    client_name = (vars.form['client_input'].get()).strip().lower().replace(" ", "_")
+    client_name = (vars.form['client_input'].get()).strip().lower().replace(" ", "_").replace(", ",";").replace(",",";")
     write_to_record(cwd, doc_id, client_name)
 
     # instance of a word document using the template
