@@ -1,3 +1,4 @@
+from tkinter import StringVar
 import variables as vars
 import customtkinter as ctk
 import re
@@ -20,6 +21,7 @@ def clear_fields():
     vars.form['scr_frame'].destroy()
     vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=335, height=230)
     vars.form['scr_frame'].place(x=25, y=12)
+    vars.form['remove_item_btn'].configure(image=vars.icons['empty_item'], fg_color="#e0e0e0", state="disabled")
 
     ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
     ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
@@ -85,6 +87,12 @@ def refresh_table_and_amounts():
     cumulative_pst = 0
     cumulative_total = 0
 
+    print(vars.items)
+
+    vars.form['scr_frame'].destroy()
+    vars.form['scr_frame'] = ctk.CTkScrollableFrame(vars.root, corner_radius=0, border_width=0, width=335, height=230)
+    vars.form['scr_frame'].place(x=25, y=12)
+
     ctk.CTkLabel(vars.form['scr_frame'], text="Description", corner_radius=2, width=170, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=0, pady=5, padx=5)
     ctk.CTkLabel(vars.form['scr_frame'], text="Qty", corner_radius=2, width=50, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=1, pady=5, padx=5)
     ctk.CTkLabel(vars.form['scr_frame'], text="Price", corner_radius=2, width=80, fg_color='#CCCCCC', font=vars.font_family).grid(row=0, column=2, pady=5, padx=5)
@@ -96,10 +104,35 @@ def refresh_table_and_amounts():
 
             if (col_idx == 0):
                 col_width = 170
+
+                radio_label = vars.items[entry][col_name]
+                if len(radio_label) > 22:
+                    radio_label = radio_label[0:22] + "..."
+
+                ctk.CTkRadioButton(
+                    vars.form['scr_frame'],
+                    text=radio_label,
+                    bg_color='white',
+                    corner_radius=10,
+                    width=col_width,
+                    height=28,
+                    radiobutton_height=12,
+                    radiobutton_width=12,
+                    variable=vars.radio_var,
+                    command=lambda:select(),
+                    value=vars.items[entry][col_name],
+                ).grid(row=(entry + 1),column=col_idx, pady=5, padx=5)
+
             elif (col_idx == 1):
                 col_width = 50
 
-            ctk.CTkLabel(vars.form['scr_frame'], text=vars.items[entry][col_name], fg_color='white', corner_radius=2, width=col_width).grid(row=(entry + 1), column=col_idx, pady=5, padx=5)
+                ctk.CTkLabel(
+                    vars.form['scr_frame'],
+                    text=vars.items[entry][col_name],
+                    fg_color='white',
+                    corner_radius=2,
+                    width=col_width
+                ).grid(row=(entry + 1), column=col_idx, pady=5, padx=5)
 
         row_rate = float(vars.items[entry]['rate'])
         row_qty = int(vars.items[entry]['qty'])
@@ -115,11 +148,31 @@ def refresh_table_and_amounts():
         cumulative_pst += row_pst_amount*row_qty
         cumulative_total += total_row_charge
 
-        vars.form['gst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_gst))
-        vars.form['pst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_pst))
-        vars.form['total_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_total))
-
         ctk.CTkLabel(vars.form['scr_frame'], text='{:,.2f}'.format(total_row_charge), fg_color='white', corner_radius=2, width=80).grid(row=(entry + 1), column=(col_idx + 1), pady=5, padx=5)
+
+    vars.form['gst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_gst))
+    vars.form['pst_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_pst))
+    vars.form['total_display_amount'].configure(text="$" + '{:,.2f}'.format(cumulative_total))
+
+    if len(vars.items) == 0:
+        vars.form['remove_item_btn'].configure(image=vars.icons['empty_item'], fg_color="#e0e0e0", state="disabled")
+
+
+# activate the button once an item is selected
+def select():
+    vars.form['remove_item_btn'].configure(image=vars.icons['delete_item'], state="normal", fg_color="#c41212")
+
+
+# delete the selected item from the list
+def remove_item():
+    selected_item = vars.radio_var.get()
+    
+    for item in vars.items:
+        if item['desc'] == selected_item:
+            vars.items.remove(item)
+
+    refresh_table_and_amounts()
+    vars.form['remove_item_btn'].configure(image=vars.icons['select_item'], state="disabled", fg_color="#e0e0e0")
 
 
 # callback for when an item is selected from the dropdown menu

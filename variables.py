@@ -9,6 +9,7 @@ def init():
     global screen_sizes, form, root, popups, cwd, icons, items, font_family, search_window
     global drp_values, drp_list, drp_str_var
     global cumulative_gst, cumulative_pst, cumulative_total
+    global radio_var
 
     cwd = os.getcwd()
 
@@ -29,8 +30,10 @@ def init():
         "search": None,
         "docx": None,
         "add_item": None,
+        "adjust_rate": None,
         "select_item": None,
         "delete_item": None,
+        "empty_item": None,
         "open": None,
     }
 
@@ -71,4 +74,6 @@ def init():
     search_window = {
         "popup": None
     }
+
+    radio_var = StringVar(value="")
 

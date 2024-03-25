@@ -146,7 +146,7 @@ def generate_invoice(cwd):
     os.startfile(filename.lower())
 
 
-#
+# open documents
 def open_doc_by_filter():
 
     file_found = False
@@ -194,7 +194,7 @@ def open_doc_by_filter():
         popup(title="", message='No match found', corner_radius=2)
 
 
-#
+# change the number of documents to be opened
 def change_doc_count(amount):
     new_qty = int(vars.search_window['qty_of_docs_to_open'].cget('text')) + amount
 
@@ -213,7 +213,7 @@ def change_doc_count(amount):
     vars.search_window['qty_of_docs_to_open'].configure(text=new_qty)
 
 
-# 
+# display the popup which allows users to search for existing documents
 def search_documents():
 
     if (vars.search_window['popup'] is None or not vars.search_window['popup'].winfo_exists()): 
