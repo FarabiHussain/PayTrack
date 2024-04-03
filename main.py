@@ -23,7 +23,12 @@ y = (vars.screen_sizes['hs']/2) - (h/2)
 
 os.system("cls")
 vars.root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
+
+try:
+    vars.root.iconbitmap(resource_path("assets\\icons\\logo.ico"))
+except Exception as e:
+    pass
+
 vars.root.configure(fg_color='white')
 vars.root.title(f"AMCAIM PayTrack ({vars.form['version']})")
 
