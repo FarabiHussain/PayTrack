@@ -254,7 +254,12 @@ def search_documents():
         vars.search_window['popup'].geometry('%dx%d+%d+%d' % (w, h, x, y))
         vars.search_window['popup'].resizable(False, False)
         vars.search_window['popup'].configure(fg_color='white')
-        vars.search_window['popup'].after(201, lambda: vars.search_window['popup'].iconbitmap("assets\\icons\\logo.ico"))
+       
+        try:
+            vars.search_window['popup'].after(201, lambda: vars.search_window['popup'].iconbitmap("assets\\icons\\logo.ico"))
+        except Exception as e:
+            pass
+       
         vars.search_window['popup'].title("Search Payment")
         vars.search_window['popup'].after(202, lambda: vars.search_window['popup'].focus())
 
